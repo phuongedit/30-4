@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Mở đầu 30/4</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #tank30-4 {
+      position: absolute;
+      bottom: 60px;
+      left: -200px;
+      width: 300px;
+      transition: left 24s linear;
+      z-index: 10;
+    }
+
+    #gate30-4 {
+      position: absolute;
+      bottom: 40px;
+      right: 200px;
+      width: 500px;
+      transition: transform 0.5s;
+      z-index: 10;
+    }
+
+    #gate30-4.broken {
+      transform: rotateZ(-20deg) translateY(30px);
+    }
+
+    #smoke30-4 {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(#999, transparent);
+      border-radius: 50%;
+      bottom: 80px;
+      right: 180px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes smoke {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 0.7; transform: scale(1.2); }
+      100% { opacity: 0; transform: scale(2); }
+    }
+
+    #smoke30-4.show {
+      animation: smoke 2s forwards;
+    }
+
+    #victoryText {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: red;
+      text-shadow: 2px 2px yellow;
+      opacity: 0;
+      transition: opacity 2s;
+      z-index: 999;
+    }
+
+    #victoryText.show {
+      opacity: 1;
+    }
+
+    #trackMarks {
+      position: absolute;
+      bottom: 60px;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      background: repeating-linear-gradient(
+        to right,
+        #444,
+        #444 10px,
+        transparent 10px,
+        transparent 20px
+      );
+      opacity: 0;
+      transition: opacity 1s;
+    }
+
+    #trackMarks.show {
+      opacity: 0.4;
+    }
+    .history-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Không cho ảnh gây ảnh hưởng đến sự kiện click */
+  z-index: 10; /* Để ảnh nền ở dưới */
+}
+
+.history-frame {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+  filter: grayscale(100%) blur(1px) contrast(1.1);
+  z-index: 10;
+}
+
+  </style>
+</head>
+<body>
+    <div class="history-overlay">
+        <img src="war1.jpg" class="history-frame" id="history1">
+        <img src="war2.jpg" class="history-frame" id="history2">
+        <img src="war3.jpg" class="history-frame" id="history3">
+        <img src="yb1.jpg" class="history-frame" id="celebrate1">
+        <img src="yb2.webp" class="history-frame" id="celebrate2">
+        <img src="yb3.jpg" class="history-frame" id="celebrate3">
+      </div>
+      
+  <!-- Xe tăng và cổng -->
+  <img id="tank30-4" src="tank.png" alt="Xe tăng">
+  <img id="gate30-4" src="gate.png" alt="Cổng">
+  <div id="smoke30-4"></div>
+  <div id="trackMarks"></div>
+  <div id="victoryText">Giải phóng hoàn toàn miền Nam!</div>
+
+  <!-- Âm thanh -->
+  <audio id="crashSound" src="amth.wav"></audio>
+  <audio id="victoryMusic" src="victory.mp3" loop></audio>
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    // Pháo hoa bên trái
+confetti({
+  particleCount: 80,
+  angle: 60,
+  spread: 55,
+  origin: { x: 0, y: 0.6 }
+});
+
+// Pháo hoa bên phải
+confetti({
+  particleCount: 80,
+  angle: 120,
+  spread: 55,
+  origin: { x: 1, y: 0.6 }
+});
+</script>
+
+  <script>
+     let tankStarted = false;
+
+function runTankSceneOnce() {
+  if (tankStarted) return;
+  tankStarted = true;
+
+  const tank = document.getElementById('tank30-4');
+  const gate = document.getElementById('gate30-4');
+  const smoke = document.getElementById('smoke30-4');
+  const victoryText = document.getElementById('victoryText');
+  const track = document.getElementById('trackMarks');
+
+  const crashSound = document.getElementById('crashSound');
+  const victoryMusic = document.getElementById('victoryMusic');
+
+  // Phát nhạc nền khi click lần đầu
+  const bgm = document.getElementById('backgroundMusic');
+  if (bgm) {
+    bgm.play().catch((err) => {
+      console.log("Không tự động phát được nhạc:", err);
+    });
+  }
+
+  // Giai đoạn 1: chạy tới cổng trong 24s
+  tank.style.transition = 'left 24s linear';
+  tank.style.left = 'calc(100% - 700px)';
+  track.classList.add('show');
+
+  // Sau 24s: húc cổng + hiệu ứng
+  setTimeout(() => {
+    gate.classList.add('broken');
+    smoke.classList.add('show');
+    victoryText.classList.add('show');
+    crashSound.play();
+    victoryMusic.play();
+
+    confetti({
+      particleCount: 200,
+      spread: 100,
+      origin: { y: 0.6 }
+    });
+
+    // Xe tăng chạy tiếp ra ngoài màn
+    setTimeout(() => {
+      tank.style.transition = 'left 3s linear';
+      tank.style.left = 'calc(100% + 300px)';
+    }, 1000);
+
+  }, 24000);
+
+  // Sau 55s: ẩn mọi thứ và chuyển trang
+  setTimeout(() => {
+    tank.style.display = 'none';
+    gate.style.display = 'none';
+    smoke.style.display = 'none';
+    track.style.display = 'none';
+    victoryText.style.display = 'none';
+    bgm.pause(); // Dừng nhạc nền nếu muốn
+    window.location.href = "index.html";
+  }, 55000);
+}
+
+document.addEventListener('click', runTankSceneOnce, { once: true });
+</script>
+<audio id="backgroundMusic" loop>
+    <source src="bg.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <script>
+    // Giây thứ 5
+setTimeout(() => {
+  showImage('history1'); // ảnh chiến tranh 1
+}, 5000);
+
+// Giây thứ 12
+setTimeout(() => {
+  hideImage('history1');
+  showImage('history2'); // ảnh chiến tranh 2
+}, 12000);
+setTimeout(() => {
+  hideImage('history2');
+  showImage('history3'); // ảnh chiến tranh 3
+}, 17000);
+
+// Giây thứ 20
+setTimeout(() => {
+  hideImage('history3');
+}, 20000);
+// Giây 26
+setTimeout(() => {
+  showImage('celebrate1'); // người dân cầm cờ
+}, 26000);
+
+// Giây 35
+setTimeout(() => {
+  hideImage('celebrate1');
+  showImage('celebrate2'); // lá cờ tung bay
+}, 35000);
+setTimeout(() => {
+  hideImage('celebrate2');
+  showImage('celebrate3'); // lá cờ tung bay
+}, 42000);
+// Giây 50
+setTimeout(() => {
+  hideImage('celebrate3');
+}, 50000);
+function showImage(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.opacity = 0.5; // bạn có thể thử 0.4 ~ 0.6
+}
+
+function hideImage(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.opacity = 0;
+}
+
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kỷ niệm 50 năm</title>
+  <!-- Confetti (Pháo hoa) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    li {
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+li:hover {
+  background-color: #ffe6e6;
+}
+
+.detail-box {
+  margin-top: 20px;
+  padding: 20px;
+  background: #fff;
+  border: 2px solid #cc0000;
+  border-radius: 10px;
+  display: none;
+}
+
+.detail-box img, .detail-box video {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff7e6;
+      scroll-behavior: smooth;
+    }
+
+    header {
+      background-color: #cc0000;
+      color: yellow;
+      padding: 20px 40px;
+      text-align: center;
+      text-shadow: 2px 2px #800000;
+    }
+
+    header h1 {
+      font-size: 48px;
+      margin: 0;
+    }
+
+    header h2 {
+      font-size: 24px;
+      margin: 10px 0 0 0;
+      color: white;
+    }
+
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 40px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .map {
+      flex: 1;
+      min-width: 300px;
+      background-color: #e60000;
+      position: relative;
+      height: 400px;
+      border-radius: 10px;
+      margin: 10px;
+    }
+
+    .map::before {
+      content: '★';
+      color: yellow;
+      font-size: 120px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.7; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+
+    .content {
+      flex: 1;
+      min-width: 300px;
+      margin: 10px;
+    }
+
+    .content h3 {
+      color: #cc0000;
+      font-size: 36px;
+      margin: 0;
+    }
+
+    .content p {
+      font-size: 20px;
+      color: #800000;
+      margin: 20px 0;
+    }
+
+    .highlight-date {
+      font-size: 28px;
+      color: #b30000;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    @keyframes wave {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(4deg); }
+      50% { transform: rotate(0deg); }
+      75% { transform: rotate(-4deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .flag {
+      display: inline-block;
+      animation: wave 2s infinite ease-in-out;
+      font-size: 32px;
+      margin: 0 10px;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      background: #f5f5f5;
+      padding: 40px 20px;
+    }
+
+    .timeline h2 {
+      text-align: center;
+      color: #cc0000;
+      margin-bottom: 30px;
+    }
+
+    .timeline ul {
+      max-width: 800px;
+      margin: auto;
+      padding-left: 20px;
+    }
+
+    .timeline li {
+      font-size: 18px;
+      margin: 10px 0;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    .timeline li::before {
+      content: "★";
+      color: red;
+      position: absolute;
+      left: -20px;
+      top: 0;
+    }
+
+    /* TƯ LIỆU */
+    .gallery {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .gallery h2 {
+      color: #cc0000;
+      margin-bottom: 20px;
+    }
+
+    .gallery p {
+      font-size: 18px;
+      color: #444;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 32px;
+      }
+
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .map {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <h1>KỶ NIỆM 50 NĂM</h1>
+    <h2>GIẢI PHÓNG ĐẤT NƯỚC</h2>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="map"></div>
+
+      
+    <div class="content">
+      <h3>30/4/1975 <span class="flag">🇻🇳</span> 30/4/2025</h3>
+      <p>Kỷ niệm ngày lịch sử thống nhất đất nước, kết thúc chiến tranh, mở ra thời kỳ hòa bình và phát triển.</p>
+      <div class="highlight-date">Ngày 30/4 - 1/5</div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="timeline">
+    <h2>Những dấu mốc lịch sử</h2>
+    <ul>
+      <li onclick="showDetail('1954')">⭐ 1954: Hiệp định Genève chia đôi đất nước tại vĩ tuyến 17.</li>
+      <li onclick="showDetail('1975')">⭐ 30/4/1975: Chiến dịch Hồ Chí Minh toàn thắng, đất nước thống nhất.</li>
+      <li onclick="showDetail('1986')">⭐ 1986: Đổi mới, mở cửa kinh tế.</li>
+      <li onclick="showDetail('1995')">⭐ 1995: Việt Nam gia nhập ASEAN.</li>
+      <li onclick="showDetail('2000')">⭐ 2000: Kỷ niệm 25 năm thống nhất đất nước.</li>
+      <li onclick="showDetail('2025')">⭐ 2000: Kỷ niệm 50 năm thống nhất đất nước.</li>
+      <!-- Thêm các mốc khác tương tự -->
+    </ul>
+  
+    <!-- Khu hiển thị nội dung -->
+    <div id="detail-box" class="detail-box"></div>
+  </section>
+  
+
+  <!-- GALLERY -->
+  <section class="gallery">
+    <h2>Tư liệu & Hình ảnh</h2>
+    <p>Bác Hồ Đọc Tuyên Ngôn Độc Lập </p>
+    <audio controls>
+        <source src="vtv24.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ thẻ audio.
+    </audio>
+    <p>Quốc ca nước Cộng Hòa Xã Hội Chủ Nghĩa Việt Nam </p>
+    <video controls>
+        <source src="qc.mp4" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video.
+      </video>
+  </section>
+
+  <!-- PHÁO HOA -->
+
+  <script>
+    function showDetail(year) {
+      const detailBox = document.getElementById('detail-box');
+      let content = '';
+  
+      if (year === '1954') {
+        content = `
+          <h3>Hiệp định Genève 1954</h3>
+          <p>Hiệp định chia đôi đất nước tại vĩ tuyến 17, kết thúc chiến tranh Đông Dương.</p>
+          <p>Hiệp định Giơnevơ là một hiệp định quốc tế được ký ngày 20-7-1954 tại Giơnevơ, Thụy Sỹ, về đình chỉ chiến tranh, khôi phục hòa bình ở Đông Dương, bãi bỏ quyền cai trị của người Pháp, công nhận nền độc lập của ba quốc gia Việt Nam, Lào và Campuchia, chính thức chấm dứt chế độ thực dân Pháp tại Đông Dương. Hiệp định này đã đánh dấu thắng lợi hoàn toàn của cuộc kháng chiến chống Pháp.</p>
+          <img src="z6516498698008_30cf210384f15d317da3f5a00c834fee.jpg" alt="Hiệp định Genève">
+          <video controls>
+            <source src="chiacat.mp4" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ video.
+          </video>
+        `;
+      }
+  
+      if (year === '1975') {
+        content = `
+          <h3>Giải phóng miền Nam 30/4/1975</h3>
+          <p>Chiến dịch Hồ Chí Minh kết thúc thắng lợi, thống nhất đất nước.</p>
+          <video controls>
+            <source src="31.mp4" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ video.
+          </video>
+         
+        `;
+      }
+      if (year === '1986') {
+        content = `
+          <h3>Đổi mới mở cửa kinh tế 1986</h3>
+          <p>Thời kì đổi mới, mở cửa kinh tế.</p>
+          <p>Đại hội đã khởi xướng đường lối đổi mới toàn diện đất nước và bầu ông Nguyễn Văn Linh là Tổng Bí thư Đảng. Đại hội nhận định, 5 năm qua cách mạng nước ta diễn ra trong bối cảnh quốc tế và trong nước có những thuận lợi nhưng có nhiều khó khăn phức tạp.</p>
+          <video controls>
+            <source src="1986.mp4" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ video.
+          </video>
+         
+        `;
+      }
+      if (year === '1995') {
+        content = `
+          <h3>1995 Việt Nam gai nhập asian</h3>
+          <p>Việt Nam gia nhập ASEAN.</p>
+          <p>Vào thời điểm thập kỉ 60 – 70 của thế kỉ XX, khu vực Đông Nam Á còn rất nghi kỵ, thậm chí căng thẳng và đối đầu với nhau thì việc ASEAN kết nạp Việt Nam cũng như Việt Nam gia nhập ASEAN đã tạo cho môi trường khu vực gắn kết lại với nhau hướng tới một ASEAN gồm 10 nước Đông Nam Á. Với việc Việt Nam tham gia, ASEAN có điều kiện hơn để hướng tới xây dựng cộng đồng và đóng góp vai trò trung tâm của mình trong hòa bình, ổn định và hợp tác khu vực.</p>
+          <img src="asian.jpg" alt="Hiệp định Genève">
+          <img src="asian2.jpg" alt="Hiệp định Genève">
+        `;
+      }
+      if (year === '2000') {
+        content = `
+          <h3>Lễ duyệt binh kỉ niệm 25 năm giải phóng miền nam thống nhất đât nước 30/4/1975 - 30/4/2000</h3>
+          <p>25 năm sau ngày thống nhất đất nước (1975–2000) là giai đoạn quan trọng trong lịch sử Việt Nam. Sau chiến thắng 30/4/1975, đất nước hoàn toàn thống nhất, mở ra thời kỳ mới – xây dựng và bảo vệ Tổ quốc xã hội chủ nghĩa. Trong 25 năm, Việt Nam đã vượt qua nhiều khó khăn như hậu quả chiến tranh, cấm vận kinh tế, khủng hoảng, để từng bước đổi mới, phát triển kinh tế, ổn định chính trị và nâng cao đời sống nhân dân. Đặc biệt, công cuộc Đổi mới từ năm 1986 đã đưa đất nước ra khỏi khủng hoảng, mở cửa hội nhập quốc tế. Năm 2000, Việt Nam đã thiết lập quan hệ ngoại giao với hầu hết các nước, khẳng định vị thế trên trường quốc tế.</p>
+          <video controls>
+            <source src="2000.mp4" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ video.
+          </video>
+         
+        `;
+      }
+      if (year === '2025') {
+        content = `
+          <h3>Lễ duyệt binh kỉ niệm 50 năm giải phóng miền nam thống nhất đât nước 30/4/1975 - 30/4/2025</h3>
+          <p>50 năm thống nhất đất nước (1975–2025) là chặng đường đầy ý nghĩa trong lịch sử dân tộc Việt Nam. Từ sau ngày 30/4/1975, đất nước hoàn toàn độc lập, Bắc – Nam sum họp một nhà. Trải qua nửa thế kỷ, Việt Nam đã vượt qua nhiều thử thách: khắc phục hậu quả chiến tranh, vượt qua thời kỳ bao cấp khó khăn, tiến hành công cuộc Đổi mới từ năm 1986 và dần hội nhập với thế giới.
+
+Đến nay, sau 50 năm, đất nước đã có nhiều thành tựu to lớn về kinh tế, chính trị, xã hội, quốc phòng – an ninh và đối ngoại. Đời sống nhân dân được cải thiện rõ rệt, vị thế và uy tín của Việt Nam trên trường quốc tế ngày càng được nâng cao. Dấu mốc 50 năm là dịp để ôn lại truyền thống hào hùng, đồng thời cũng là thời điểm để hướng đến tương lai, tiếp tục xây dựng một nước Việt Nam hòa bình, phát triển và thịnh vượng.</p>
+
+</p>
+          <video controls>
+            <source src="2025.mp4" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ video.
+          </video>
+         
+        `;
+      }
+      detailBox.innerHTML = content;
+      detailBox.style.display = 'block';
+      detailBox.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+  
+</body>
+</html>
